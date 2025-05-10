@@ -32,6 +32,21 @@ public class BookController {
         return bookService.getBookByIsbn(isbn);
     }
 
+    @GetMapping("/title/{title}")
+    public List<BookResponse> getBookByTitle(@PathVariable String title) {
+        return bookService.getBookByTitle(title);
+    }
+
+    @GetMapping("/author/{author}")
+    public List<BookResponse> getBookByAuthor(@PathVariable String author) {
+        return bookService.getBookByAuthor(author);
+    }
+
+    @GetMapping("/genre/{genre}")
+    public List<BookResponse> getBookByGenre(@PathVariable String genre) {
+        return bookService.getBookByGenre(genre);
+    }
+
     @GetMapping
     public Page<BookResponse> getAllBooks(
             @RequestParam(required = false) String keyword,

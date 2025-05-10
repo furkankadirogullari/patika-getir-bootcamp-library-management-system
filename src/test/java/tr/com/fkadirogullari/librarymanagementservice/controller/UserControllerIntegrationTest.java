@@ -33,7 +33,7 @@ public class UserControllerIntegrationTest {
     @Test
     void register_shouldSucceed() throws Exception {
         UserRequest request = new UserRequest();
-        request.setUsername("integrationUser");
+        request.setUserName("integrationUser");
         request.setEmail("integration@test.com");
         request.setPassword("123456");
 

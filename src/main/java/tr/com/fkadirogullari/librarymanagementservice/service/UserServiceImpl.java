@@ -10,12 +10,15 @@ import tr.com.fkadirogullari.librarymanagementservice.config.JwtTokenProvider;
 import tr.com.fkadirogullari.librarymanagementservice.dto.UserLoginRequest;
 import tr.com.fkadirogullari.librarymanagementservice.dto.UserRequest;
 import tr.com.fkadirogullari.librarymanagementservice.dto.UserResponse;
+import tr.com.fkadirogullari.librarymanagementservice.dto.UserUpdateRequest;
 import tr.com.fkadirogullari.librarymanagementservice.exception.ResourceNotFoundException;
+import tr.com.fkadirogullari.librarymanagementservice.model.Role;
 import tr.com.fkadirogullari.librarymanagementservice.model.User;
 import tr.com.fkadirogullari.librarymanagementservice.repository.UserRepository;
 
 import java.security.Principal;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +32,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserResponse register(UserRequest req) {
+
         if (userRepository.existsByEmail(req.getEmail())) {
             throw new IllegalArgumentException("Email already in use");
         }
@@ -37,11 +41,14 @@ public class UserServiceImpl implements UserService{
             throw new IllegalArgumentException("Username already in use");
         }
 
+        Set<Role> user_role = req.getRoles();
+
+
         User user = User.builder()
                 .userName(req.getUserName())
                 .email(req.getEmail())
                 .password(passwordEncoder.encode(req.getPassword()))
-                .roles(Set.of("ROLE_USER"))
+                .roles(user_role)
                 .build();
 
         User saved = userRepository.save(user);
@@ -57,9 +64,25 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.findByEmail(req.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("Invalid email or password"));
 
-        return jwtTokenProvider.generateToken(user.getEmail());
+        return jwtTokenProvider.generateToken(user.getEmail(),user.getRoles());
     }
 
+    @Override
+    public UserResponse getUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+
+        Set<String> roleNames = user.getRoles().stream()
+                .map(Enum::name)
+                .collect(Collectors.toSet());
+
+        return new UserResponse(
+                user.getId(),
+                user.getUserName(),
+                user.getEmail(),
+                roleNames
+        );
+    }
     @Override
     public UserResponse getCurrentUser() {
         Principal principal = request.getUserPrincipal();
@@ -74,12 +97,44 @@ public class UserServiceImpl implements UserService{
         return mapToResponse(user);
     }
 
+    @Override
+    public UserResponse updateUser(Long id, UserUpdateRequest req) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+
+        user.setUserName(req.getUserName());
+        user.setEmail(req.getEmail());
+
+        if (req.getPassword() != null && !req.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(req.getPassword()));
+        }
+
+        userRepository.save(user);
+
+        Set<String> roles = user.getRoles().stream()
+                .map(Enum::name)
+                .collect(Collectors.toSet());
+
+        return new UserResponse(user.getId(), user.getUserName(), user.getEmail(), roles);
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+
+        userRepository.delete(user);
+    }
+
     private UserResponse mapToResponse(User user) {
+        Set<String> roleNames = user.getRoles().stream()
+                .map(Enum::name)
+                .collect(Collectors.toSet());
         return UserResponse.builder()
                 .id(user.getId())
                 .userName(user.getUserName())
                 .email(user.getEmail())
-                .roles(user.getRoles())
+                .roles(roleNames)
                 .build();
     }
 }

@@ -12,7 +12,9 @@ import tr.com.fkadirogullari.librarymanagementservice.model.Book;
 import tr.com.fkadirogullari.librarymanagementservice.repository.BookRepository;
 
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +35,7 @@ public class BookServiceImpl implements BookService{
                 .isbn(request.getIsbn())
                 .publicationDate(request.getPublicationDate())
                 .genre(request.getGenre())
+                .quantity(request.getQuantity())
                 .build();
 
         return mapToResponse(bookRepository.save(book));
@@ -43,6 +46,27 @@ public class BookServiceImpl implements BookService{
         Book book = bookRepository.findByIsbn(isbn)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found with ISBN: " + isbn));
         return mapToResponse(book);
+    }
+
+    @Override
+    public List<BookResponse> getBookByTitle(String title) {
+        return bookRepository.findAllByTitle(title).stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookResponse> getBookByGenre(String genre) {
+        return bookRepository.findAllByGenre(genre).stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookResponse> getBookByAuthor(String author) {
+        return bookRepository.findAllByAuthor(author).stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
     }
 
     @Override

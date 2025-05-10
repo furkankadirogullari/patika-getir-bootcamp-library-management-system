@@ -13,6 +13,7 @@ import org.mockito.MockitoAnnotations;
 import tr.com.fkadirogullari.librarymanagementservice.config.JwtTokenProvider;
 import tr.com.fkadirogullari.librarymanagementservice.dto.UserLoginRequest;
 import tr.com.fkadirogullari.librarymanagementservice.dto.UserRequest;
+import tr.com.fkadirogullari.librarymanagementservice.model.Role;
 import tr.com.fkadirogullari.librarymanagementservice.model.User;
 import tr.com.fkadirogullari.librarymanagementservice.repository.UserRepository;
 
@@ -51,7 +52,7 @@ public class UserServiceImplTest {
         req.setPassword("123456");
 
         when(userRepository.existsByEmail(req.getEmail())).thenReturn(false);
-        when(userRepository.existsByUsername(req.getUserName())).thenReturn(false);
+        when(userRepository.existsByUserName(req.getUserName())).thenReturn(false);
         when(passwordEncoder.encode("123456")).thenReturn("encoded-password");
 
         User saved = User.builder()
@@ -59,7 +60,7 @@ public class UserServiceImplTest {
                 .userName("john")
                 .email("john@example.com")
                 .password("encoded-password")
-                .roles(Set.of("ROLE_USER"))
+                .roles(Set.of(Role.ROLE_PATRON))
                 .build();
 
         when(userRepository.save(any())).thenReturn(saved);
@@ -91,7 +92,7 @@ public class UserServiceImplTest {
         User user = User.builder().email("user@example.com").build();
 
         when(userRepository.findByEmail(req.getEmail())).thenReturn(Optional.of(user));
-        when(jwtTokenProvider.generateToken(user.getEmail())).thenReturn("mock-jwt");
+        when(jwtTokenProvider.generateToken(user.getEmail(),user.getRoles())).thenReturn("mock-jwt");
 
         var token = userService.login(req);
 
@@ -101,7 +102,8 @@ public class UserServiceImplTest {
 
     @Test
     void getCurrentUser_shouldReturnUser() {
-        User user = User.builder().email("user@example.com").userName("john").roles(Set.of("ROLE_USER")).build();
+
+        User user = User.builder().email("user@example.com").userName("john").roles(Set.of(Role.ROLE_LIBRARIAN)).build();
 
         when(httpServletRequest.getUserPrincipal()).thenReturn(principal);
         when(principal.getName()).thenReturn("user@example.com");

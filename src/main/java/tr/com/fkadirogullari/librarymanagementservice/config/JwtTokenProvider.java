@@ -1,12 +1,15 @@
 package tr.com.fkadirogullari.librarymanagementservice.config;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.Value;
 import org.springframework.stereotype.Component;
+import tr.com.fkadirogullari.librarymanagementservice.model.Role;
 
-import java.util.Date;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenProvider {
@@ -15,11 +18,16 @@ public class JwtTokenProvider {
 
     private final long EXPIRATION_TIME = 1000 * 60 * 60;
 
-    public String generateToken(String email) {
+    public String generateToken(String email, Set<Role> roles) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + EXPIRATION_TIME);
 
+        Map<String, Object> claims = new HashMap<>();
+
+        claims.put("roles", roles.stream().map(Enum::name).collect(Collectors.toList()));
+
         return Jwts.builder()
+                .setClaims(claims)
                 .setSubject(email)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
@@ -35,6 +43,14 @@ public class JwtTokenProvider {
                 .getSubject();
     }
 
+    public List<String> getRolesFromToken(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(token)
+                .getBody();
+
+        return (List<String>) claims.get("roles");
+    }
     public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);

@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import tr.com.fkadirogullari.librarymanagementservice.config.JwtTokenProvider;
 import tr.com.fkadirogullari.librarymanagementservice.dto.BorrowRequest;
 import tr.com.fkadirogullari.librarymanagementservice.model.Book;
+import tr.com.fkadirogullari.librarymanagementservice.model.Role;
 import tr.com.fkadirogullari.librarymanagementservice.model.User;
 import tr.com.fkadirogullari.librarymanagementservice.repository.BookRepository;
 import tr.com.fkadirogullari.librarymanagementservice.repository.UserRepository;
@@ -53,11 +54,11 @@ public class LoanControllerIntegrationTest {
                 .userName("testuser")
                 .email("test@example.com")
                 .password(passwordEncoder.encode("123456"))
-                .roles(Set.of("ROLE_USER"))
+                .roles(Set.of(Role.ROLE_PATRON))
                 .build();
         userRepository.save(user);
 
-        jwtToken = jwtTokenProvider.generateToken(user.getEmail());
+        jwtToken = jwtTokenProvider.generateToken(user.getEmail(),user.getRoles());
 
         // Kitap oluştur
         Book book = Book.builder()

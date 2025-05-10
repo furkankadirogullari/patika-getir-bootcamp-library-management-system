@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import tr.com.fkadirogullari.librarymanagementservice.config.JwtTokenProvider;
 import tr.com.fkadirogullari.librarymanagementservice.dto.BookRequest;
+import tr.com.fkadirogullari.librarymanagementservice.model.Role;
 import tr.com.fkadirogullari.librarymanagementservice.model.User;
 import tr.com.fkadirogullari.librarymanagementservice.repository.UserRepository;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -50,11 +51,11 @@ public class BookControllerIntegrationTest {
                 .userName("librarian")
                 .email("librarian@example.com")
                 .password(passwordEncoder.encode("123456"))
-                .roles(Set.of("ROLE_USER"))
+                .roles(Set.of(Role.ROLE_LIBRARIAN))
                 .build();
 
         userRepository.save(user);
-        jwtToken = jwtTokenProvider.generateToken(user.getEmail());
+        jwtToken = jwtTokenProvider.generateToken(user.getEmail(),user.getRoles());
     }
 
     @Test
