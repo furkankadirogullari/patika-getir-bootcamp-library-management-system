@@ -13,9 +13,6 @@ public interface BookRepository extends JpaRepository<Book,Long>, JpaSpecificati
     List<Book> findAllByTitle(String title);
     List<Book> findAllByGenre(String genre);
     List<Book> findAllByAuthor(String author);
-    //Optional<Book> findByTitle(String title);
-    //Optional<Book> findByAuthor(String author);
-    //Optional<Book> findByGenre(String genre);
     void deleteByIsbn(String isbn);
 
 }

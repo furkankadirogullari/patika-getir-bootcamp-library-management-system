@@ -19,12 +19,6 @@ public interface BookService {
 
     List<BookResponse> getBookByGenre(String genre);
 
-    //BookResponse getBookByTitle(String title);
-
-    //BookResponse getBookByAuthor(String author);
-
-    //BookResponse getBookByGenre(String genre);
-
     Page<BookResponse> getAllBooks(String keyword, Pageable pageable);
 
     BookResponse updateBook(String isbn, BookRequest request);

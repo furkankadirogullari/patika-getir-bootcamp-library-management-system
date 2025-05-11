@@ -3,12 +3,16 @@ package tr.com.fkadirogullari.librarymanagementservice.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import tr.com.fkadirogullari.librarymanagementservice.model.Role;
 
 import java.util.Set;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserRequest {
 
 
