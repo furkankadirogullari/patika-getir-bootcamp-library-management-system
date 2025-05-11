@@ -5,12 +5,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import tr.com.fkadirogullari.librarymanagementservice.dto.BookRequest;
 import tr.com.fkadirogullari.librarymanagementservice.dto.BookResponse;
 import tr.com.fkadirogullari.librarymanagementservice.model.Book;
-import tr.com.fkadirogullari.librarymanagementservice.repository.BookRepository;
+import tr.com.fkadirogullari.librarymanagementservice.publisher.ReactiveBookAvailability;
 import tr.com.fkadirogullari.librarymanagementservice.service.BookService;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
 public class BookController {
 
     private final BookService bookService;
+    private final ReactiveBookAvailability publisher;
 
     @PostMapping
     public BookResponse addBook(@Valid @RequestBody BookRequest request) {
@@ -66,4 +68,9 @@ public class BookController {
     public void deleteBook(@PathVariable String isbn) {
         bookService.deleteBook(isbn);
     }
+
+   /* @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Book> streamBookAvailability() {
+        return publisher.getStream();
+    }*/
 }

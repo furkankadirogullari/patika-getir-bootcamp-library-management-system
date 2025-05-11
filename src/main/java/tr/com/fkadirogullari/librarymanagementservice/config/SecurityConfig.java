@@ -25,7 +25,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/users/login", "/api/users/register", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/api/users/login", "/api/users/register", "/swagger-ui/**", "/v3/api-docs/**","/api/books/stream").permitAll()
                         // Librarian yetkisi gerektiren uçlar:
                         .requestMatchers(HttpMethod.POST, "/api/books/**").hasRole("LIBRARIAN")
                         .requestMatchers(HttpMethod.PUT, "/api/books/**").hasRole("LIBRARIAN")

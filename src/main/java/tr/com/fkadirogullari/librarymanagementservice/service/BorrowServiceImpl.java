@@ -9,6 +9,7 @@ import tr.com.fkadirogullari.librarymanagementservice.exception.ResourceNotFound
 import tr.com.fkadirogullari.librarymanagementservice.model.Book;
 import tr.com.fkadirogullari.librarymanagementservice.model.Borrow;
 import tr.com.fkadirogullari.librarymanagementservice.model.User;
+import tr.com.fkadirogullari.librarymanagementservice.publisher.ReactiveBookAvailability;
 import tr.com.fkadirogullari.librarymanagementservice.repository.BookRepository;
 import tr.com.fkadirogullari.librarymanagementservice.repository.BorrowRepository;
 import tr.com.fkadirogullari.librarymanagementservice.repository.UserRepository;
@@ -24,7 +25,7 @@ public class BorrowServiceImpl implements BorrowService{
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
     private final HttpServletRequest request;
-    //private final Book book;
+    private final ReactiveBookAvailability reactiveBookAvailability;
 
 
     @Override
@@ -63,6 +64,8 @@ public class BorrowServiceImpl implements BorrowService{
         book.setQuantity(book.getQuantity() - 1);
         bookRepository.save(book);
 
+        reactiveBookAvailability.publish(book);
+
         Borrow saved = borrowRepository.save(borrow);
 
         return new BorrowResponse(
@@ -98,6 +101,8 @@ public class BorrowServiceImpl implements BorrowService{
         Book book = borrow.getBook();
         book.setQuantity(book.getQuantity() + 1);
         bookRepository.save(book);
+
+        reactiveBookAvailability.publish(book);
 
 
         Borrow updated = borrowRepository.save(borrow);

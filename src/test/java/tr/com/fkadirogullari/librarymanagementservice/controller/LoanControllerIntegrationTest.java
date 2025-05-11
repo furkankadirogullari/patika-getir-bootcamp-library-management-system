@@ -48,8 +48,8 @@ public class LoanControllerIntegrationTest {
     private Book savedBook;
 
     @BeforeEach
-    void setUp() {
-        // Kullanıcı oluştur
+    void setUp() throws Exception {
+        // Kullanıcıyı kaydet (örnek)
         User user = User.builder()
                 .userName("testuser")
                 .email("test@example.com")
