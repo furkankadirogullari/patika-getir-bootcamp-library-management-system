@@ -20,6 +20,7 @@ import tr.com.fkadirogullari.librarymanagementservice.repository.BorrowRepositor
 import tr.com.fkadirogullari.librarymanagementservice.repository.UserRepository;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -61,7 +62,7 @@ public class BorrowServiceImplTest {
         when(loanRepository.save(any())).thenAnswer(invocation -> {
             Borrow borrow = invocation.getArgument(0);
             borrow.setId(1L);
-            borrow.setBorrowDate(LocalDateTime.now());
+            borrow.setBorrowDate(LocalDate.now());
             return borrow;
         });
 

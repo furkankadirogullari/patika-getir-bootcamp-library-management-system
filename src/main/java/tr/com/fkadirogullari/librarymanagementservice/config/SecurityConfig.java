@@ -31,11 +31,15 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/books/**").hasRole("LIBRARIAN")
                         .requestMatchers(HttpMethod.DELETE, "/api/books/**").hasRole("LIBRARIAN")
                         .requestMatchers(HttpMethod.GET, "/api/users/{id}").hasRole("LIBRARIAN")
+                        .requestMatchers(HttpMethod.GET, "/api/borrows/history/all").hasRole("LIBRARIAN")
+                        .requestMatchers(HttpMethod.GET, "/api/borrows/overdue/**").hasRole("LIBRARIAN")
                         .requestMatchers(HttpMethod.PUT, "/api/users/**").hasRole("LIBRARIAN")
                         .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole("LIBRARIAN")
 
                         // Patron yetkisi gerektiren uçlar:
-                        .requestMatchers("/api/borrows/**").hasRole("PATRON")
+                        //.requestMatchers("/api/borrows/**").hasRole("PATRON")
+                        .requestMatchers(HttpMethod.POST, "/api/borrows/**").hasRole("PATRON")
+                        .requestMatchers(HttpMethod.GET, "/api/borrows/history").hasRole("PATRON")
 
                         // Ortak (giriş yapılmış herkese açık)
                         .requestMatchers(HttpMethod.GET, "/api/books/**").authenticated()

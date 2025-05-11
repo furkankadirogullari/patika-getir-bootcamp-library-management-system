@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface BorrowService {
 
-    BorrowResponse borrowBook(BorrowRequest request);
-    BorrowResponse returnBook(Long borrowId);
-    List<BorrowResponse> getMyBorrows(boolean onlyActive);
+    BorrowResponse borrowBook(String userEmail, Long bookId);
+    BorrowResponse returnBook(String userEmail, Long loanId);
+    List<BorrowResponse> getUserBorrowHistory(String email);
+    List<BorrowResponse> getAllBorrowHistory();
+    List<BorrowResponse> getOverdueBorrows();
 }

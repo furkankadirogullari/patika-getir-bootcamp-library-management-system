@@ -3,6 +3,7 @@ package tr.com.fkadirogullari.librarymanagementservice.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -27,8 +28,9 @@ public class Borrow {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private LocalDateTime borrowDate;
-    private LocalDateTime returnDate;
+    private LocalDate borrowDate;
+    private LocalDate dueDate;
+    private LocalDate returnDate;
 
     private boolean returned;
 }
