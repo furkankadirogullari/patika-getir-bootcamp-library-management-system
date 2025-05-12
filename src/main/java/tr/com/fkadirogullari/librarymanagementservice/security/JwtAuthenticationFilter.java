@@ -1,4 +1,4 @@
-package tr.com.fkadirogullari.librarymanagementservice.config;
+package tr.com.fkadirogullari.librarymanagementservice.security;
 
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -12,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import tr.com.fkadirogullari.librarymanagementservice.model.User;
 import tr.com.fkadirogullari.librarymanagementservice.repository.UserRepository;
 
 import java.io.IOException;

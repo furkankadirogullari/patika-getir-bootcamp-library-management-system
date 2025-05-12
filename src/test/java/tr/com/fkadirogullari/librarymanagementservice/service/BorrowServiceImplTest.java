@@ -15,15 +15,16 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
 
 import org.springframework.security.access.AccessDeniedException;
-import tr.com.fkadirogullari.librarymanagementservice.dto.BorrowResponse;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.request.BorrowResponse;
 import tr.com.fkadirogullari.librarymanagementservice.exception.ResourceNotFoundException;
-import tr.com.fkadirogullari.librarymanagementservice.model.Book;
-import tr.com.fkadirogullari.librarymanagementservice.model.Borrow;
-import tr.com.fkadirogullari.librarymanagementservice.model.User;
+import tr.com.fkadirogullari.librarymanagementservice.model.entity.Book;
+import tr.com.fkadirogullari.librarymanagementservice.model.entity.Borrow;
+import tr.com.fkadirogullari.librarymanagementservice.model.entity.User;
 import tr.com.fkadirogullari.librarymanagementservice.publisher.ReactiveBookAvailability;
 import tr.com.fkadirogullari.librarymanagementservice.repository.BookRepository;
 import tr.com.fkadirogullari.librarymanagementservice.repository.BorrowRepository;
 import tr.com.fkadirogullari.librarymanagementservice.repository.UserRepository;
+import tr.com.fkadirogullari.librarymanagementservice.service.Impl.BorrowServiceImpl;
 
 import java.time.LocalDate;
 import java.util.List;

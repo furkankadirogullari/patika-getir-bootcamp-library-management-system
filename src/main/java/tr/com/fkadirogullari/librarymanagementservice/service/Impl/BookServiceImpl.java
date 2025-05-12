@@ -1,15 +1,16 @@
-package tr.com.fkadirogullari.librarymanagementservice.service;
+package tr.com.fkadirogullari.librarymanagementservice.service.Impl;
 
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import tr.com.fkadirogullari.librarymanagementservice.dto.BookRequest;
-import tr.com.fkadirogullari.librarymanagementservice.dto.BookResponse;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.request.BookRequest;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.response.BookResponse;
 import tr.com.fkadirogullari.librarymanagementservice.exception.ResourceNotFoundException;
-import tr.com.fkadirogullari.librarymanagementservice.model.Book;
+import tr.com.fkadirogullari.librarymanagementservice.model.entity.Book;
 import tr.com.fkadirogullari.librarymanagementservice.repository.BookRepository;
+import tr.com.fkadirogullari.librarymanagementservice.service.contract.BookService;
 
 
 import java.util.List;
@@ -18,10 +19,11 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class BookServiceImpl implements BookService{
+public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
+    // Saves a new book to the database
     @Override
     public BookResponse addBook(BookRequest request) {
         Optional<Book> existingBook = bookRepository.findByIsbn(request.getIsbn());

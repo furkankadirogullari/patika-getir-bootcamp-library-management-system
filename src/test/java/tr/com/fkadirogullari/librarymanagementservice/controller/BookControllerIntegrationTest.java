@@ -8,8 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import tr.com.fkadirogullari.librarymanagementservice.dto.BookRequest;
-import tr.com.fkadirogullari.librarymanagementservice.model.Role;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.request.BookRequest;
 
 import java.time.LocalDate;
 

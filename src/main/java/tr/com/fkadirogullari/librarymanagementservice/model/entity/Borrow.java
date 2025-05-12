@@ -1,10 +1,9 @@
-package tr.com.fkadirogullari.librarymanagementservice.model;
+package tr.com.fkadirogullari.librarymanagementservice.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter

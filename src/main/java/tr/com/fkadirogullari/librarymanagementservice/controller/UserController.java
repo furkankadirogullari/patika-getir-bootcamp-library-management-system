@@ -7,11 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import tr.com.fkadirogullari.librarymanagementservice.dto.UserLoginRequest;
-import tr.com.fkadirogullari.librarymanagementservice.dto.UserRequest;
-import tr.com.fkadirogullari.librarymanagementservice.dto.UserResponse;
-import tr.com.fkadirogullari.librarymanagementservice.dto.UserUpdateRequest;
-import tr.com.fkadirogullari.librarymanagementservice.service.UserService;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.request.UserLoginRequest;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.request.UserRequest;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.response.UserResponse;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.request.UserUpdateRequest;
+import tr.com.fkadirogullari.librarymanagementservice.service.contract.UserService;
 
 @Tag(name = "User Management", description = "Kullanıcı kayıt, giriş ve yönetimi")
 @RestController

@@ -12,11 +12,12 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import tr.com.fkadirogullari.librarymanagementservice.dto.BookRequest;
-import tr.com.fkadirogullari.librarymanagementservice.dto.BookResponse;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.request.BookRequest;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.response.BookResponse;
 import tr.com.fkadirogullari.librarymanagementservice.exception.ResourceNotFoundException;
-import tr.com.fkadirogullari.librarymanagementservice.model.Book;
+import tr.com.fkadirogullari.librarymanagementservice.model.entity.Book;
 import tr.com.fkadirogullari.librarymanagementservice.repository.BookRepository;
+import tr.com.fkadirogullari.librarymanagementservice.service.Impl.BookServiceImpl;
 
 import java.time.LocalDate;
 import java.util.List;

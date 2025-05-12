@@ -13,8 +13,9 @@ import static org.mockito.Mockito.when;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import tr.com.fkadirogullari.librarymanagementservice.model.User;
+import tr.com.fkadirogullari.librarymanagementservice.model.entity.User;
 import tr.com.fkadirogullari.librarymanagementservice.repository.UserRepository;
+import tr.com.fkadirogullari.librarymanagementservice.service.Impl.CustomUserDetailsService;
 
 import java.util.HashSet;
 import java.util.Optional;

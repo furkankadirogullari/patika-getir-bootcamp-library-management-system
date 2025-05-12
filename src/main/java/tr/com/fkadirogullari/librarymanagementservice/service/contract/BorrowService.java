@@ -1,7 +1,6 @@
-package tr.com.fkadirogullari.librarymanagementservice.service;
+package tr.com.fkadirogullari.librarymanagementservice.service.contract;
 
-import tr.com.fkadirogullari.librarymanagementservice.dto.BorrowRequest;
-import tr.com.fkadirogullari.librarymanagementservice.dto.BorrowResponse;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.request.BorrowResponse;
 
 import java.util.List;
 

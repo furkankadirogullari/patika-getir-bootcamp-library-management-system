@@ -1,4 +1,4 @@
-package tr.com.fkadirogullari.librarymanagementservice.dto;
+package tr.com.fkadirogullari.librarymanagementservice.model.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import tr.com.fkadirogullari.librarymanagementservice.model.Role;
+import tr.com.fkadirogullari.librarymanagementservice.model.entity.Role;
 
 import java.util.Set;
 

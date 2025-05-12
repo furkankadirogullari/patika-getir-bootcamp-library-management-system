@@ -1,9 +1,9 @@
 package tr.com.fkadirogullari.librarymanagementservice.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import tr.com.fkadirogullari.librarymanagementservice.model.Book;
-import tr.com.fkadirogullari.librarymanagementservice.model.Borrow;
-import tr.com.fkadirogullari.librarymanagementservice.model.User;
+import tr.com.fkadirogullari.librarymanagementservice.model.entity.Book;
+import tr.com.fkadirogullari.librarymanagementservice.model.entity.Borrow;
+import tr.com.fkadirogullari.librarymanagementservice.model.entity.User;
 
 import java.time.LocalDate;
 import java.util.List;

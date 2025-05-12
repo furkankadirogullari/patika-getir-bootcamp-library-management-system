@@ -3,7 +3,7 @@ package tr.com.fkadirogullari.librarymanagementservice.publisher;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
-import tr.com.fkadirogullari.librarymanagementservice.model.Book;
+import tr.com.fkadirogullari.librarymanagementservice.model.entity.Book;
 
 @Component
 public class ReactiveBookAvailability {

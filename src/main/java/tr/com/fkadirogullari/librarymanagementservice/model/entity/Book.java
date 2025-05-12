@@ -1,4 +1,4 @@
-package tr.com.fkadirogullari.librarymanagementservice.model;
+package tr.com.fkadirogullari.librarymanagementservice.model.entity;
 
 
 import jakarta.persistence.*;

@@ -1,4 +1,4 @@
-package tr.com.fkadirogullari.librarymanagementservice.dto;
+package tr.com.fkadirogullari.librarymanagementservice.model.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

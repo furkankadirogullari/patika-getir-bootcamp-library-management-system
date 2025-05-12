@@ -1,19 +1,15 @@
 package tr.com.fkadirogullari.librarymanagementservice.controller;
 
-import io.jsonwebtoken.Jwt;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import tr.com.fkadirogullari.librarymanagementservice.dto.BorrowRequest;
-import tr.com.fkadirogullari.librarymanagementservice.dto.BorrowResponse;
-import tr.com.fkadirogullari.librarymanagementservice.model.Borrow;
-import tr.com.fkadirogullari.librarymanagementservice.service.BorrowService;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.request.BorrowRequest;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.request.BorrowResponse;
+import tr.com.fkadirogullari.librarymanagementservice.service.contract.BorrowService;
 
 import java.io.IOException;
 import java.io.PrintWriter;

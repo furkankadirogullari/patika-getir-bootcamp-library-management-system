@@ -1,11 +1,11 @@
-package tr.com.fkadirogullari.librarymanagementservice.service;
+package tr.com.fkadirogullari.librarymanagementservice.service.Impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import tr.com.fkadirogullari.librarymanagementservice.model.User;
+import tr.com.fkadirogullari.librarymanagementservice.model.entity.User;
 import tr.com.fkadirogullari.librarymanagementservice.repository.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 

@@ -1,4 +1,4 @@
-package tr.com.fkadirogullari.librarymanagementservice.config;
+package tr.com.fkadirogullari.librarymanagementservice.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

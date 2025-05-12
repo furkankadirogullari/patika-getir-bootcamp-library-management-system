@@ -1,7 +1,7 @@
 package tr.com.fkadirogullari.librarymanagementservice.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import tr.com.fkadirogullari.librarymanagementservice.model.User;
+import tr.com.fkadirogullari.librarymanagementservice.model.entity.User;
 
 import java.util.Optional;
 

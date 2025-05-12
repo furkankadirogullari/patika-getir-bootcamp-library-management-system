@@ -1,10 +1,9 @@
-package tr.com.fkadirogullari.librarymanagementservice.dto;
+package tr.com.fkadirogullari.librarymanagementservice.model.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import tr.com.fkadirogullari.librarymanagementservice.model.Role;
 
 import java.util.Set;
 

@@ -1,4 +1,4 @@
-package tr.com.fkadirogullari.librarymanagementservice.service;
+package tr.com.fkadirogullari.librarymanagementservice.service.Impl;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -6,15 +6,16 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import tr.com.fkadirogullari.librarymanagementservice.config.JwtTokenProvider;
-import tr.com.fkadirogullari.librarymanagementservice.dto.UserLoginRequest;
-import tr.com.fkadirogullari.librarymanagementservice.dto.UserRequest;
-import tr.com.fkadirogullari.librarymanagementservice.dto.UserResponse;
-import tr.com.fkadirogullari.librarymanagementservice.dto.UserUpdateRequest;
+import tr.com.fkadirogullari.librarymanagementservice.security.JwtTokenProvider;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.request.UserLoginRequest;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.request.UserRequest;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.response.UserResponse;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.request.UserUpdateRequest;
 import tr.com.fkadirogullari.librarymanagementservice.exception.ResourceNotFoundException;
-import tr.com.fkadirogullari.librarymanagementservice.model.Role;
-import tr.com.fkadirogullari.librarymanagementservice.model.User;
+import tr.com.fkadirogullari.librarymanagementservice.model.entity.Role;
+import tr.com.fkadirogullari.librarymanagementservice.model.entity.User;
 import tr.com.fkadirogullari.librarymanagementservice.repository.UserRepository;
+import tr.com.fkadirogullari.librarymanagementservice.service.contract.UserService;
 
 import java.security.Principal;
 import java.util.Set;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -30,6 +31,8 @@ public class UserServiceImpl implements UserService{
     private final AuthenticationManager authenticationManager;
     private final HttpServletRequest request;
 
+
+    // Registers a new user by encoding the password and saving to DB
     @Override
     public UserResponse register(UserRequest req) {
 
@@ -48,27 +51,34 @@ public class UserServiceImpl implements UserService{
                 .userName(req.getUserName())
                 .email(req.getEmail())
                 .password(passwordEncoder.encode(req.getPassword()))
-                .roles(user_role)
+                .roles(user_role) // Assign roles (e.g. ROLE_PATRON, ROLE_LIBRARIAN)
                 .build();
 
         User saved = userRepository.save(user);
         return mapToResponse(saved);
     }
 
+
+    // Authenticates the user and returns a JWT token
     @Override
     public String login(UserLoginRequest req) {
+
+        // Verify credentials
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(req.getEmail(), req.getPassword())
         );
 
+        // Load user by email
         User user = userRepository.findByEmail(req.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("Invalid email or password"));
 
-        //Set<String> roleStrings = user.getRoles().stream().map(Enum::name).collect(Collectors.toSet());
+
 
         return jwtTokenProvider.generateToken(user.getEmail(),user.getRoles());
     }
 
+
+    // Retrieves a user by ID (used by librarians)
     @Override
     public UserResponse getUserById(Long id) {
         User user = userRepository.findById(id)
@@ -85,6 +95,8 @@ public class UserServiceImpl implements UserService{
                 roleNames
         );
     }
+
+    // Retrieves the details of the currently logged-in user
     @Override
     public UserResponse getCurrentUser() {
         Principal principal = request.getUserPrincipal();
@@ -99,6 +111,8 @@ public class UserServiceImpl implements UserService{
         return mapToResponse(user);
     }
 
+
+    // Updates user info (allowed for librarians)
     @Override
     public UserResponse updateUser(Long id, UserUpdateRequest req) {
         User user = userRepository.findById(id)
@@ -120,6 +134,8 @@ public class UserServiceImpl implements UserService{
         return new UserResponse(user.getId(), user.getUserName(), user.getEmail(), roles);
     }
 
+
+    // Deletes a user (only librarians can perform this)
     @Override
     public void deleteUser(Long id) {
         User user = userRepository.findById(id)

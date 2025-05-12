@@ -1,9 +1,8 @@
-package tr.com.fkadirogullari.librarymanagementservice.dto;
+package tr.com.fkadirogullari.librarymanagementservice.model.dto.request;
 
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
 @Getter

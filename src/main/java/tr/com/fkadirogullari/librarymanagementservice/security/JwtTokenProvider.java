@@ -1,12 +1,11 @@
-package tr.com.fkadirogullari.librarymanagementservice.config;
+package tr.com.fkadirogullari.librarymanagementservice.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.Value;
 import org.springframework.stereotype.Component;
-import tr.com.fkadirogullari.librarymanagementservice.model.Role;
+import tr.com.fkadirogullari.librarymanagementservice.model.entity.Role;
 
 import java.util.*;
 import java.util.stream.Collectors;

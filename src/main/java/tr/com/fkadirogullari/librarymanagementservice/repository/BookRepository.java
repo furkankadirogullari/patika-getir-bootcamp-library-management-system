@@ -2,7 +2,7 @@ package tr.com.fkadirogullari.librarymanagementservice.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import tr.com.fkadirogullari.librarymanagementservice.model.Book;
+import tr.com.fkadirogullari.librarymanagementservice.model.entity.Book;
 
 import java.util.List;
 import java.util.Optional;

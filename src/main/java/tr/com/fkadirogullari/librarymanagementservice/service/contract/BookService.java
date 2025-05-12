@@ -1,10 +1,9 @@
-package tr.com.fkadirogullari.librarymanagementservice.service;
+package tr.com.fkadirogullari.librarymanagementservice.service.contract;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import tr.com.fkadirogullari.librarymanagementservice.dto.BookRequest;
-import tr.com.fkadirogullari.librarymanagementservice.dto.BookResponse;
-import tr.com.fkadirogullari.librarymanagementservice.model.Book;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.request.BookRequest;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.response.BookResponse;
 
 import java.util.List;
 

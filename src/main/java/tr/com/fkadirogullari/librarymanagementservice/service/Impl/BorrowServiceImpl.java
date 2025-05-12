@@ -1,25 +1,26 @@
-package tr.com.fkadirogullari.librarymanagementservice.service;
+package tr.com.fkadirogullari.librarymanagementservice.service.Impl;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import tr.com.fkadirogullari.librarymanagementservice.dto.BorrowResponse;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.request.BorrowResponse;
 import tr.com.fkadirogullari.librarymanagementservice.exception.ResourceNotFoundException;
-import tr.com.fkadirogullari.librarymanagementservice.model.Book;
-import tr.com.fkadirogullari.librarymanagementservice.model.Borrow;
-import tr.com.fkadirogullari.librarymanagementservice.model.User;
+import tr.com.fkadirogullari.librarymanagementservice.model.entity.Book;
+import tr.com.fkadirogullari.librarymanagementservice.model.entity.Borrow;
+import tr.com.fkadirogullari.librarymanagementservice.model.entity.User;
 import tr.com.fkadirogullari.librarymanagementservice.publisher.ReactiveBookAvailability;
 import tr.com.fkadirogullari.librarymanagementservice.repository.BookRepository;
 import tr.com.fkadirogullari.librarymanagementservice.repository.BorrowRepository;
 import tr.com.fkadirogullari.librarymanagementservice.repository.UserRepository;
+import tr.com.fkadirogullari.librarymanagementservice.service.contract.BorrowService;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class BorrowServiceImpl implements BorrowService{
+public class BorrowServiceImpl implements BorrowService {
 
     private final BorrowRepository borrowRepository;
     private final BookRepository bookRepository;

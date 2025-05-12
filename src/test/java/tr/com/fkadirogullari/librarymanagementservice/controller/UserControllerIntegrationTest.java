@@ -9,11 +9,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import tr.com.fkadirogullari.librarymanagementservice.dto.UserLoginRequest;
-import tr.com.fkadirogullari.librarymanagementservice.dto.UserRequest;
-import tr.com.fkadirogullari.librarymanagementservice.model.Role;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.request.UserLoginRequest;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.request.UserRequest;
+import tr.com.fkadirogullari.librarymanagementservice.model.entity.Role;
 
-import java.util.List;
 import java.util.Set;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
