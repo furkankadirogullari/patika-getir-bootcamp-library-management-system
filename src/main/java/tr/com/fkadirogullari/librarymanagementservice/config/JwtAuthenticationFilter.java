@@ -1,5 +1,6 @@
 package tr.com.fkadirogullari.librarymanagementservice.config;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,9 +38,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             if (jwtTokenProvider.validateToken(token)) {
                 String email = jwtTokenProvider.getEmailFromToken(token);
-
+                Claims claims = jwtTokenProvider.getClaimsFromToken(token);
                 // ✅ Roller token'dan alınır
-                List<String> roles = jwtTokenProvider.getRolesFromToken(token);
+                //List<String> roles = jwtTokenProvider.getRolesFromToken(token);
+                @SuppressWarnings("unchecked")
+                List<String> roles = (List<String>) claims.get("roles");
 
                 List<SimpleGrantedAuthority> authorities = roles.stream()
                         .map(SimpleGrantedAuthority::new)
@@ -51,35 +54,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
-
-
-            // Token yoksa veya format yanlışsa filtreyi direkt geçir
-            //filterChain.doFilter(request, response);
-            //return;
         }
 
         filterChain.doFilter(request, response);
-        return;
 
-        //String token = header.substring(7);
-
-        /*try {
-            if (jwtTokenProvider.validateToken(token)) {
-                String email = jwtTokenProvider.getEmailFromToken(token);
-                User user = userRepository.findByEmail(email).orElse(null);
-
-                if (user != null) {
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            email, null, null);
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
-                }
-            }
-        } catch (Exception e) {
-            // Geçersiz token varsa, oturum kurma ama 403 de verme
-            logger.warn("JWT doğrulama başarısız: " + e.getMessage());
-        }*/
-
-        //filterChain.doFilter(request, response);
     }
 }

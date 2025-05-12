@@ -64,6 +64,8 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.findByEmail(req.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("Invalid email or password"));
 
+        //Set<String> roleStrings = user.getRoles().stream().map(Enum::name).collect(Collectors.toSet());
+
         return jwtTokenProvider.generateToken(user.getEmail(),user.getRoles());
     }
 

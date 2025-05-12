@@ -1,13 +1,15 @@
 package tr.com.fkadirogullari.librarymanagementservice.dto;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
+@Getter
+@Setter
 @Builder
+
 public class BorrowResponse {
 
     private Long borrowId;

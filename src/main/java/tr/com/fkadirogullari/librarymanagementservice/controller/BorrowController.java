@@ -1,6 +1,7 @@
 package tr.com.fkadirogullari.librarymanagementservice.controller;
 
 import io.jsonwebtoken.Jwt;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,11 @@ public class BorrowController {
 
     private final BorrowService borrowService;
 
+
+    @Operation(
+            summary = "User(patron) borrows books",
+            description = "The user must have PATRON permission to borrow the book."
+    )
     @PreAuthorize("hasRole('PATRON')")
     @PostMapping("/borrow")
     public ResponseEntity<BorrowResponse> borrowBook(@RequestBody BorrowRequest request,
@@ -34,6 +40,11 @@ public class BorrowController {
         return ResponseEntity.ok(response);
     }
 
+
+    @Operation(
+            summary = "User(patron) return borrow",
+            description = "The user must have PATRON permission to return the borrow."
+    )
     @PreAuthorize("hasRole('PATRON')")
     @PostMapping("/return/{borrowId}")
     public ResponseEntity<BorrowResponse> returnBook(@PathVariable Long borrowId,
@@ -43,6 +54,11 @@ public class BorrowController {
         return ResponseEntity.ok(response);
     }
 
+
+    @Operation(
+            summary = "View user borrow history",
+            description = "This API requires PATRON authorization."
+    )
     @PreAuthorize("hasRole('PATRON')")
     @GetMapping("/history")
     public ResponseEntity<List<BorrowResponse>> getMyBorrowHistory(Authentication authentication) {
@@ -50,18 +66,33 @@ public class BorrowController {
         return ResponseEntity.ok(borrowService.getUserBorrowHistory(email));
     }
 
+
+    @Operation(
+            summary = "All borrow history is displayed",
+            description = "This API requires LIBRARIAN authorization."
+    )
     @PreAuthorize("hasRole('LIBRARIAN')")
     @GetMapping("/history/all")
     public ResponseEntity<List<BorrowResponse>> getAllBorrowHistory() {
         return ResponseEntity.ok(borrowService.getAllBorrowHistory());
     }
 
+
+    @Operation(
+            summary = "Displays overdue books",
+            description = "This API requires LIBRARIAN authorization."
+    )
     @PreAuthorize("hasRole('LIBRARIAN')")
     @GetMapping("/overdue")
     public ResponseEntity<List<BorrowResponse>> getOverdueBorrows() {
         return ResponseEntity.ok(borrowService.getOverdueBorrows());
     }
 
+
+    @Operation(
+            summary = "Returns the report of overdue books",
+            description = "This API requires LIBRARIAN authorization."
+    )
     @PreAuthorize("hasRole('LIBRARIAN')")
     @GetMapping(value = "/overdue/report", produces = "text/csv")
     public void exportOverdueBorrowsReport(HttpServletResponse response) throws IOException {

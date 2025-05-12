@@ -22,9 +22,14 @@ public class JwtTokenProvider {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + EXPIRATION_TIME);
 
+        Set<String> roleStrings = roles.stream()
+                .map(Enum::name)
+                .collect(Collectors.toSet());
+
         Map<String, Object> claims = new HashMap<>();
 
-        claims.put("roles", roles.stream().map(Enum::name).collect(Collectors.toList()));
+        claims.put("roles", roleStrings);
+        //roles.stream().map(Enum::name).collect(Collectors.toList())
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -33,6 +38,13 @@ public class JwtTokenProvider {
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                 .compact();
+    }
+
+    public Claims getClaimsFromToken(String token) {
+        return Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     public String getEmailFromToken(String token) {

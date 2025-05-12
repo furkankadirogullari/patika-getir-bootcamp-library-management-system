@@ -69,8 +69,5 @@ public class BookController {
         bookService.deleteBook(isbn);
     }
 
-   /* @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<Book> streamBookAvailability() {
-        return publisher.getStream();
-    }*/
+
 }
