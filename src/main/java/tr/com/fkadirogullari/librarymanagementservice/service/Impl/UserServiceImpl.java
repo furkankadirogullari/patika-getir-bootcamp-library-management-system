@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    // Dependencies injected via constructor
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
@@ -32,28 +33,31 @@ public class UserServiceImpl implements UserService {
     private final HttpServletRequest request;
 
 
-    // Registers a new user by encoding the password and saving to DB
+    // Registers a new user by checking for uniqueness, encoding password, and saving to DB
     @Override
     public UserResponse register(UserRequest req) {
 
+        // Check if email is already registered
         if (userRepository.existsByEmail(req.getEmail())) {
             throw new IllegalArgumentException("Email already in use");
         }
 
+        // Check if username is already taken
         if (userRepository.existsByUserName(req.getUserName())) {
             throw new IllegalArgumentException("Username already in use");
         }
 
-        Set<Role> user_role = req.getRoles();
+        Set<Role> user_role = req.getRoles(); // Get user roles from the request
 
-
+        // Build the user entity
         User user = User.builder()
                 .userName(req.getUserName())
                 .email(req.getEmail())
-                .password(passwordEncoder.encode(req.getPassword()))
+                .password(passwordEncoder.encode(req.getPassword()))    // Encode the password
                 .roles(user_role) // Assign roles (e.g. ROLE_PATRON, ROLE_LIBRARIAN)
                 .build();
 
+        // Save to DB and return the mapped response
         User saved = userRepository.save(user);
         return mapToResponse(saved);
     }
@@ -63,27 +67,28 @@ public class UserServiceImpl implements UserService {
     @Override
     public String login(UserLoginRequest req) {
 
-        // Verify credentials
+        // Perform authentication (throws exception if invalid)
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(req.getEmail(), req.getPassword())
         );
 
-        // Load user by email
+        // Retrieve user by email
         User user = userRepository.findByEmail(req.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("Invalid email or password"));
 
 
-
+        // Generate JWT with user's email and roles
         return jwtTokenProvider.generateToken(user.getEmail(),user.getRoles());
     }
 
 
-    // Retrieves a user by ID (used by librarians)
+    // Fetches user details by user ID (used by librarian roles)
     @Override
     public UserResponse getUserById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 
+        // Convert Role enums to String names
         Set<String> roleNames = user.getRoles().stream()
                 .map(Enum::name)
                 .collect(Collectors.toSet());
@@ -96,14 +101,17 @@ public class UserServiceImpl implements UserService {
         );
     }
 
-    // Retrieves the details of the currently logged-in user
+    // Returns currently authenticated user's information
     @Override
     public UserResponse getCurrentUser() {
+
+        // Retrieve security principal from request
         Principal principal = request.getUserPrincipal();
         if (principal == null) {
             throw new ResourceNotFoundException("No authenticated user");
         }
 
+        // Fetch user based on email from principal
         String email = principal.getName();
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
@@ -112,21 +120,27 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    // Updates user info (allowed for librarians)
+    // Updates a user's information, including password if provided
     @Override
     public UserResponse updateUser(Long id, UserUpdateRequest req) {
+
+        // Fetch existing user by ID
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 
+        // Update basic info
         user.setUserName(req.getUserName());
         user.setEmail(req.getEmail());
 
+        // Update password only if it's not blank
         if (req.getPassword() != null && !req.getPassword().isBlank()) {
             user.setPassword(passwordEncoder.encode(req.getPassword()));
         }
 
+        // Save updated user
         userRepository.save(user);
 
+        // Convert roles for response
         Set<String> roles = user.getRoles().stream()
                 .map(Enum::name)
                 .collect(Collectors.toSet());
@@ -135,15 +149,18 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    // Deletes a user (only librarians can perform this)
+    // Deletes a user from the system
     @Override
     public void deleteUser(Long id) {
+
+        // Retrieve user or throw if not found
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 
         userRepository.delete(user);
     }
 
+    // Utility method to convert User entity to UserResponse DTO
     private UserResponse mapToResponse(User user) {
         Set<String> roleNames = user.getRoles().stream()
                 .map(Enum::name)

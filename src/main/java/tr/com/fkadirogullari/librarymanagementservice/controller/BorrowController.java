@@ -22,12 +22,12 @@ public class BorrowController {
 
     private final BorrowService borrowService;
 
-
+    // Endpoint to allow a user with 'PATRON' role to borrow a book
     @Operation(
             summary = "User(patron) borrows books",
             description = "The user must have PATRON permission to borrow the book."
     )
-    @PreAuthorize("hasRole('PATRON')")
+    @PreAuthorize("hasRole('PATRON')") // Ensure only 'PATRON' role can access this endpoint
     @PostMapping("/borrow")
     public ResponseEntity<BorrowResponse> borrowBook(@RequestBody BorrowRequest request,
                                                      Authentication authentication) {
@@ -36,7 +36,7 @@ public class BorrowController {
         return ResponseEntity.ok(response);
     }
 
-
+    // Endpoint to allow a user with 'PATRON' role to return a borrowed book
     @Operation(
             summary = "User(patron) return borrow",
             description = "The user must have PATRON permission to return the borrow."
@@ -51,6 +51,7 @@ public class BorrowController {
     }
 
 
+    // Endpoint to allow a user with 'PATRON' role to view their borrow history
     @Operation(
             summary = "View user borrow history",
             description = "This API requires PATRON authorization."
@@ -63,6 +64,7 @@ public class BorrowController {
     }
 
 
+    // Endpoint to allow a user with 'LIBRARIAN' role to view all borrow history
     @Operation(
             summary = "All borrow history is displayed",
             description = "This API requires LIBRARIAN authorization."
@@ -73,7 +75,7 @@ public class BorrowController {
         return ResponseEntity.ok(borrowService.getAllBorrowHistory());
     }
 
-
+    // Endpoint to allow a user with 'LIBRARIAN' role to view overdue borrows
     @Operation(
             summary = "Displays overdue books",
             description = "This API requires LIBRARIAN authorization."
@@ -84,7 +86,7 @@ public class BorrowController {
         return ResponseEntity.ok(borrowService.getOverdueBorrows());
     }
 
-
+    // Endpoint to export a report of overdue books as a CSV file (only for LIBRARIAN)
     @Operation(
             summary = "Returns the report of overdue books",
             description = "This API requires LIBRARIAN authorization."
@@ -100,6 +102,7 @@ public class BorrowController {
         PrintWriter writer = response.getWriter();
         writer.println("Borrow ID,Book Title,User Email,Borrow Date,Due Date");
 
+        // Write each overdue borrow entry to the CSV file
         for (BorrowResponse borrow : overdueBorrows) {
             writer.printf("%d,%s,%s,%s,%s%n",
                     borrow.getBorrowId(),
@@ -109,8 +112,8 @@ public class BorrowController {
                     borrow.getDueDate());
         }
 
-        writer.flush();
-        writer.close();
+        writer.flush(); // Ensure all data is written to the response
+        writer.close(); // Close the writer
     }
 
 

@@ -31,6 +31,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String header = request.getHeader("Authorization");
 
+        // Check if the header exists and starts with "Bearer " (standard for JWT tokens)
         if (header != null && header.startsWith("Bearer ")) {
 
             String token = header.substring(7);
@@ -38,11 +39,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (jwtTokenProvider.validateToken(token)) {
                 String email = jwtTokenProvider.getEmailFromToken(token);
                 Claims claims = jwtTokenProvider.getClaimsFromToken(token);
-                // ✅ Roller token'dan alınır
-                //List<String> roles = jwtTokenProvider.getRolesFromToken(token);
                 @SuppressWarnings("unchecked")
                 List<String> roles = (List<String>) claims.get("roles");
 
+                // Convert the roles to a list of SimpleGrantedAuthority (Spring Security's way of handling authorities)
                 List<SimpleGrantedAuthority> authorities = roles.stream()
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());

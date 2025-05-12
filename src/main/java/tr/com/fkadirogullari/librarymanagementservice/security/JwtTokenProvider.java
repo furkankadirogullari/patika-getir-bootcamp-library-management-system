@@ -17,19 +17,21 @@ public class JwtTokenProvider {
 
     private final long EXPIRATION_TIME = 1000 * 60 * 60;
 
+    // Method to generate a token
     public String generateToken(String email, Set<Role> roles) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + EXPIRATION_TIME);
 
+        // Convert roles set to a list of strings
         Set<String> roleStrings = roles.stream()
                 .map(Enum::name)
                 .collect(Collectors.toSet());
 
-        Map<String, Object> claims = new HashMap<>();
+        Map<String, Object> claims = new HashMap<>(); // Map to store claims (extra information)
 
         claims.put("roles", roleStrings);
-        //roles.stream().map(Enum::name).collect(Collectors.toList())
 
+        // Create and return the JWT token
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(email)
@@ -39,6 +41,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    // Method to get claims from the token
     public Claims getClaimsFromToken(String token) {
         return Jwts.parser()
                 .setSigningKey(SECRET_KEY)
@@ -46,6 +49,7 @@ public class JwtTokenProvider {
                 .getBody();
     }
 
+    // Method to extract the email from the token
     public String getEmailFromToken(String token) {
         return Jwts.parser()
                 .setSigningKey(SECRET_KEY)
@@ -54,6 +58,7 @@ public class JwtTokenProvider {
                 .getSubject();
     }
 
+    // Method to extract roles from the token
     public List<String> getRolesFromToken(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(SECRET_KEY)
@@ -62,6 +67,8 @@ public class JwtTokenProvider {
 
         return (List<String>) claims.get("roles");
     }
+
+    // Method to validate the token
     public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);

@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/users/login", "/api/users/register", "/swagger-ui/**", "/v3/api-docs/**","/api/books/stream").permitAll()
-                        // Librarian yetkisi gerektiren uçlar:
+                        // Ends that require LIBRARIAN authorization
                         .requestMatchers(HttpMethod.POST, "/api/books/**").hasRole("LIBRARIAN")
                         .requestMatchers(HttpMethod.PUT, "/api/books/**").hasRole("LIBRARIAN")
                         .requestMatchers(HttpMethod.DELETE, "/api/books/**").hasRole("LIBRARIAN")
@@ -36,12 +36,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/users/**").hasRole("LIBRARIAN")
                         .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole("LIBRARIAN")
 
-                        // Patron yetkisi gerektiren uçlar:
+                        // Ends that require PATRON authorization:
                         //.requestMatchers("/api/borrows/**").hasRole("PATRON")
                         .requestMatchers(HttpMethod.POST, "/api/borrows/**").hasRole("PATRON")
                         .requestMatchers(HttpMethod.GET, "/api/borrows/history").hasRole("PATRON")
 
-                        // Ortak (giriş yapılmış herkese açık)
+                        // Public (open to anyone logged in)
                         .requestMatchers(HttpMethod.GET, "/api/books/**").authenticated()
                         .requestMatchers("/api/users/me").authenticated()
                         .anyRequest().authenticated()

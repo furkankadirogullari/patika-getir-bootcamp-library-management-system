@@ -28,28 +28,32 @@ public class BorrowServiceImpl implements BorrowService {
     private final HttpServletRequest request;
     private final ReactiveBookAvailability reactiveBookAvailability;
 
-
+    // Allows a user to borrow a book if it's available and they have no active borrows
     @Override
     public BorrowResponse borrowBook(String email, Long bookId) {
 
-
+        // Retrieve user by email
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
+        // Retrieve book by ID
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
 
+        // Check if the book is already borrowed and not returned
         if (borrowRepository.existsByBookAndReturnedFalse(book)) {
             throw new IllegalStateException("Book is currently not available");
         }
 
+        // Check if the user already has an active borrow
         if (borrowRepository.existsByUserAndReturnedFalse(user)) {
             throw new IllegalStateException("User already has an active borrow");
         }
 
         LocalDate borrowDate = LocalDate.now();
-        LocalDate dueDate = borrowDate.plusDays(14); // örnek süre
+        LocalDate dueDate = borrowDate.plusDays(14); // Borrowing period: 14 days
 
+        // Create and set up the borrow record
         Borrow borrow = new Borrow();
         borrow.setBook(book);
         borrow.setUser(user);
@@ -57,18 +61,22 @@ public class BorrowServiceImpl implements BorrowService {
         borrow.setDueDate(dueDate);
         borrow.setReturned(false);
 
+        // Check if the book is in stock
         if (book.getQuantity() <= 0) {
             throw new IllegalStateException("Book is out of stock");
         }
 
-        // Kitabı ödünç veriyoruz → quantity azalt
+        // Decrease the book's quantity since it's being borrowed
         book.setQuantity(book.getQuantity() - 1);
         bookRepository.save(book);
 
+        // Notify subscribers that book availability has changed (Reactive)
         reactiveBookAvailability.publish(book);
 
+        // Save borrow record to DB
         Borrow saved = borrowRepository.save(borrow);
 
+        // Return borrow details
         return new BorrowResponse(
                 saved.getId(),
                 book.getId(),
@@ -80,34 +88,44 @@ public class BorrowServiceImpl implements BorrowService {
         );
     }
 
+    // Allows a user to return a borrowed book
     @Override
     public BorrowResponse returnBook(String email, Long borrowId) {
+
+        // Retrieve user and borrow records
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Borrow borrow = borrowRepository.findById(borrowId)
                 .orElseThrow(() -> new ResourceNotFoundException("Loan not found"));
 
+        // Ensure the borrow record belongs to the requesting user
         if (!borrow.getUser().getId().equals(user.getId())) {
             throw new AccessDeniedException("You can only return your own borrow");
         }
 
+        // Check if already returned
         if (borrow.isReturned()) {
             throw new IllegalStateException("This borrow has already been returned");
         }
 
+        // Mark borrow as returned and update return date
         borrow.setReturned(true);
         borrow.setReturnDate(LocalDate.now());
 
+        // Increase the quantity of the book
         Book book = borrow.getBook();
         book.setQuantity(book.getQuantity() + 1);
         bookRepository.save(book);
 
+
+        // Publish updated book status (Reactive)
         reactiveBookAvailability.publish(book);
 
-
+        // Save updated borrow record
         Borrow updated = borrowRepository.save(borrow);
 
+        // Return updated borrow info
         return new BorrowResponse(
                 updated.getId(),
                 updated.getBook().getId(),
@@ -119,7 +137,7 @@ public class BorrowServiceImpl implements BorrowService {
         );
     }
 
-
+    // Returns borrowing history for a specific user
     @Override
     public List<BorrowResponse> getUserBorrowHistory(String email) {
         User user = userRepository.findByEmail(email)
@@ -140,6 +158,7 @@ public class BorrowServiceImpl implements BorrowService {
                 .toList();
     }
 
+    // Returns the borrowing history of all users (accessible by librarians)
     @Override
     public List<BorrowResponse> getAllBorrowHistory() {
         return borrowRepository.findAll().stream()
@@ -155,6 +174,7 @@ public class BorrowServiceImpl implements BorrowService {
                 .toList();
     }
 
+    // Returns a list of overdue borrows
     @Override
     public List<BorrowResponse> getOverdueBorrows() {
         List<Borrow> overdueBorrows = borrowRepository.findByReturnedFalseAndDueDateBefore(LocalDate.now());
