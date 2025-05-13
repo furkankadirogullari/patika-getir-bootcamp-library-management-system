@@ -73,7 +73,7 @@ public class BookControllerIntegrationTest {
         """;
 
         createdBookId = webTestClient.post()
-                .uri("/api/books")
+                .uri("/api/books/book")
                 .header("Authorization", "Bearer " + librarianToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(bookPayload)

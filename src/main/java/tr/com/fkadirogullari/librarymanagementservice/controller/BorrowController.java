@@ -1,6 +1,7 @@
 package tr.com.fkadirogullari.librarymanagementservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+@Tag(name = "Borrow Management", description = "Kitap ödünç alma sistemi")
 @RestController
 @RequestMapping("/api/borrows")
 @RequiredArgsConstructor
@@ -23,6 +25,7 @@ public class BorrowController {
     private final BorrowService borrowService;
 
     // Endpoint to allow a user with 'PATRON' role to borrow a book
+
     @Operation(
             summary = "User(patron) borrows books",
             description = "The user must have PATRON permission to borrow the book."
