@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:17
+    container_name: library_postgres
+    environment:
+      POSTGRES_DB: library-management
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: sorceym3240
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: library_app
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://library_postgres:5432/library-management
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: sorceym3240
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8080:8080"
+    restart: on-failure
+  #docker exec -it library_postgres psql -U postgres -d library-management
+volumes:
+  postgres_data:
