@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tr.com.fkadirogullari.librarymanagementservice.model.dto.request.BookRequest;
 import tr.com.fkadirogullari.librarymanagementservice.model.dto.response.BookResponse;
@@ -75,8 +76,10 @@ public class BookController {
 
     // Deletes a book by ID (Only accessible to librarians)
     @DeleteMapping("/{isbn}")
-    public void deleteBook(@PathVariable String isbn) {
+    public ResponseEntity<Void> deleteBook(@PathVariable String isbn) {
+
         bookService.deleteBook(isbn);
+        return ResponseEntity.noContent().build();
     }
 
 

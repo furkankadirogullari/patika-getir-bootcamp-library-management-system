@@ -1,4 +1,4 @@
-package tr.com.fkadirogullari.librarymanagementservice.model.dto.request;
+package tr.com.fkadirogullari.librarymanagementservice.model.dto.response;
 
 import lombok.*;
 

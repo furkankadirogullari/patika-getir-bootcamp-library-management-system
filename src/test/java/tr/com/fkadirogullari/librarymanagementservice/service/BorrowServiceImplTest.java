@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
 
 import org.springframework.security.access.AccessDeniedException;
-import tr.com.fkadirogullari.librarymanagementservice.model.dto.request.BorrowResponse;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.response.BorrowResponse;
 import tr.com.fkadirogullari.librarymanagementservice.exception.ResourceNotFoundException;
 import tr.com.fkadirogullari.librarymanagementservice.model.entity.Book;
 import tr.com.fkadirogullari.librarymanagementservice.model.entity.Borrow;

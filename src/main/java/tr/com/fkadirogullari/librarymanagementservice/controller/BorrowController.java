@@ -8,7 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import tr.com.fkadirogullari.librarymanagementservice.model.dto.request.BorrowRequest;
-import tr.com.fkadirogullari.librarymanagementservice.model.dto.request.BorrowResponse;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.response.BorrowResponse;
 import tr.com.fkadirogullari.librarymanagementservice.service.contract.BorrowService;
 
 import java.io.IOException;

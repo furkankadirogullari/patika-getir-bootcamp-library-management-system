@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import tr.com.fkadirogullari.librarymanagementservice.model.dto.request.BorrowResponse;
+import tr.com.fkadirogullari.librarymanagementservice.model.dto.response.BorrowResponse;
 import tr.com.fkadirogullari.librarymanagementservice.exception.ResourceNotFoundException;
 import tr.com.fkadirogullari.librarymanagementservice.model.entity.Book;
 import tr.com.fkadirogullari.librarymanagementservice.model.entity.Borrow;
