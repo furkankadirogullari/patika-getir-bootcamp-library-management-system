@@ -152,7 +152,9 @@ Authorization: Bearer <your_token_here>
 
 A full Postman collection is available under:
 
-📁 `docs/postman/LibraryManagementSystem.postman_collection.json`
+📁 `library-management-postman-collection.json`
+
+Postman Collection Link : https://.postman.co/workspace/My-Workspace~47d7e245-0e13-4a98-8664-83cb15d49a8b/collection/43120842-5cb95f4b-2bb6-42b4-94fd-ef3f83de0606?action=share&creator=43120842
 
 Import this into Postman to test endpoints with ease.
 
@@ -160,9 +162,9 @@ Import this into Postman to test endpoints with ease.
 
 ## ✍️ Author
 
-Furkan Kadıroğulları
+Furkan Kadiroğulları
 Spring Boot & Java Developer
-📧 [fkadirogullari@gmail.com](mailto:fkadirogullari@gmail.com)
+📧 [furkankadirogullari@gmail.com](mailto:furkankadirogullari@gmail.com)
 
 ---
 
