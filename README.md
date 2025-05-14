@@ -163,11 +163,9 @@ Import this into Postman to test endpoints with ease.
 ## ✍️ Author
 
 Furkan Kadiroğulları
-Spring Boot & Java Developer
+
 📧 [furkankadirogullari@gmail.com](mailto:furkankadirogullari@gmail.com)
 
 ---
 
-## 📜 License
 
-This project is licensed under the MIT License.
